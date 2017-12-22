@@ -8,6 +8,7 @@ const (
 	ItemUnknown = iota
 	ItemBasics
 	ItemFunctions
+	ItemArrays
 )
 
 var trace = helper.Trace
@@ -15,7 +16,7 @@ var un = helper.Un
 var where = helper.Where
 
 func main() {
-	item := ItemFunctions
+	item := ItemArrays
 	fmt.Printf("current test item: %v\n", item)
 
 	switch item {
@@ -23,6 +24,8 @@ func main() {
 		runTestBasics()
 	case ItemFunctions:
 		runTestFunctions()
+	case ItemArrays:
+		runTestArrays()
 	case ItemUnknown:
 		fallthrough
 	default:
