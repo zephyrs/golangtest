@@ -9,12 +9,13 @@ const (
 	ArrayInsert
 	ArrayRemove
 	ArrayFilter
+	ArrayInvert
 )
 
 func runTestArrays() {
 	defer un(trace("runTestArrays"))
 
-	i := ArrayFilter
+	i := ArrayRemove
 	switch i {
 	case ArrayAppend:
 		src := []byte{'p', 'o', 'e', 'm'}
@@ -33,14 +34,30 @@ func runTestArrays() {
 		fmt.Println(src)
 	case ArrayRemove:
 		src := "abcdedf"
-		removeStringSlice(&src, 2, 4)
-		fmt.Println(src)
+		ss := []byte(src)
+		//method 1:
+		//removeStringSlice(&src, 2, 4)
+		//fmt.Print("method 1: %s\n", src)
+
+		//method 2:
+		//ss = append(ss[:2], ss[4:]...)
+		//fmt.Printf("method 2: %s\n", ss)
+
+		//method 3:
+		removeStringSlice2(&ss, 2, 4)
+		fmt.Printf("method 3: %s\n", ss)
 	case ArrayFilter:
 		src := []int{18, 20, 15, 22, 16}
 		result := filterArray(src, func(i int) bool {
 			return i%2 == 0
 		})
 		fmt.Printf("filterArray result:\n %v\n", result)
+	case ArrayInvert:
+		str := "Google!"
+		sl := []byte(str)
+		invertArray(sl)
+		fmt.Println(str)
+		fmt.Printf("%s\n", sl)
 	default:
 		fmt.Println("an unknown array to test")
 	}
@@ -79,6 +96,10 @@ func removeStringSlice(s *string, begin, end int) {
 	*s = string(ss)
 }
 
+func removeStringSlice2(ss *[]byte, begin, end int) {
+	*ss = append((*ss)[:begin], (*ss)[end:]...)
+}
+
 func filterArray(sl []int, fn func(int) bool) (result []int) {
 	for _, data := range sl {
 		if fn(data) {
@@ -87,4 +108,11 @@ func filterArray(sl []int, fn func(int) bool) (result []int) {
 	}
 
 	return
+}
+
+func invertArray(s []byte) {
+	r := len(s) - 1
+	for i := 0; i <= r/2; i++ {
+		s[i], s[r-i] = s[r-i], s[i]
+	}
 }
