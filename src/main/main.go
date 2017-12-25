@@ -9,6 +9,7 @@ const (
 	ItemBasics
 	ItemFunctions
 	ItemArrays
+	ItemMaps
 )
 
 var trace = helper.Trace
@@ -16,7 +17,7 @@ var un = helper.Un
 var where = helper.Where
 
 func main() {
-	item := ItemArrays
+	item := ItemBasics
 	fmt.Printf("current test item: %v\n", item)
 
 	switch item {
@@ -26,6 +27,8 @@ func main() {
 		runTestFunctions()
 	case ItemArrays:
 		runTestArrays()
+	case ItemMaps:
+		runTestMaps()
 	case ItemUnknown:
 		fallthrough
 	default:
