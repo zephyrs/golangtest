@@ -1,13 +1,19 @@
 package main
 
-import "unsafe"
-import "fmt"
-import "container/list"
+import (
+	"container/list"
+	"fmt"
+	"reflect"
+	"unsafe"
+)
 
 //Info ...
 type Info interface {
 	GetSalary() int
 }
+
+//Any ...
+type Any interface{}
 
 //Person ...
 type Person struct {
@@ -38,6 +44,10 @@ func (p *Person) String() string {
 	return p.firstName + " " + p.lastName
 }
 
+func (p *Manager) String() string {
+	return "Sir " + p.firstName + " " + p.lastName
+}
+
 //LastName ...
 func (p *Person) LastName() string {
 	return p.lastName
@@ -51,15 +61,37 @@ func (p *Person) SetLastName(s string) {
 func runTestBasics() {
 	defer un(trace("runTestBasics"))
 
+	getInfo1 := func(it Info) {
+		fmt.Printf("getInfo1 print %v\n", it.GetSalary())
+	}
+
+	getInfo2 := func(any Any) {
+		if v, ok := any.(Info); ok {
+			fmt.Printf("getInfo2 print %v\n", v.GetSalary())
+		} else {
+			fmt.Println("getInfo2 not work")
+		}
+	}
+
+	var magic interface{}
+	magic = 500
+
 	pp := new(Person)
 	pp.firstName = "Jason"
 	pp.lastName = "Bison"
-	pp.salary = 1345
+	pp.salary = magic.(int)
 	pp.giveRaise()
 	fmt.Printf("person salary is %v\n", pp.salary)
 
+	getInfo1(pp)
+	getInfo2(pp)
+
 	mm := &Manager{Person{"Jackie", "Chan", 5000, list.List{}}, "Film"}
 	fmt.Printf("manager is %v, salary is %v\n", mm, mm.salary)
+
+	v := reflect.ValueOf(*mm)
+	val := v.FieldByIndex([]int{0, 2})
+	fmt.Println("FieldByIndex val", val)
 
 	pers3 := &Person{"Chris", "Woodward", 1000, list.List{}}
 	var info Info
