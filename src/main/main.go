@@ -12,6 +12,7 @@ const (
 	ItemMaps
 	ItemReflect
 	ItemIO
+	ItemRoutine
 )
 
 var trace = helper.Trace
@@ -19,7 +20,7 @@ var un = helper.Un
 var where = helper.Where
 
 func main() {
-	item := ItemIO
+	item := ItemRoutine
 	fmt.Printf("current test item: %v\n", item)
 
 	switch item {
@@ -35,6 +36,8 @@ func main() {
 		runTestReflects()
 	case ItemIO:
 		runTestIOs()
+	case ItemRoutine:
+		runTestRoutines()
 	case ItemUnknown:
 		fallthrough
 	default:
