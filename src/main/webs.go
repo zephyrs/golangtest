@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"io"
 	"net/http"
@@ -26,6 +27,7 @@ var (
 	strSay   = "/fun1/"
 	strRoar  = "/fun2/"
 	strForm  = "/form/"
+	strRec   = "/rec/"
 	localURL = "localhost:9999"
 )
 
@@ -47,6 +49,8 @@ func (h *localHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		case "POST":
 			io.WriteString(w, req.FormValue("in"))
 		}
+	case strings.HasPrefix(ss, strRec):
+		rec(w, req)
 	}
 }
 
@@ -81,4 +85,34 @@ func say(w http.ResponseWriter, r *http.Request) {
 func roar(w http.ResponseWriter, r *http.Request) {
 	s := r.URL.Path[len(strRoar):]
 	fmt.Fprintf(w, "BONJOUR %s!", strings.ToUpper(s))
+}
+
+func rec(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("**********************************************")
+	switch r.Method {
+	case "GET":
+		fmt.Println("Method: GET")
+	case "POST":
+		fmt.Println("Method: POST")
+	}
+
+	fmt.Println("-------")
+
+	fmt.Println("HEADER:")
+	for k, v := range r.Header {
+		fmt.Printf("%s : %s\n", k, v)
+	}
+
+	fmt.Println("-------")
+
+	fmt.Println("BODY:")
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(r.Body)
+
+	fmt.Println(buf.String())
+	fmt.Println("**********************************************")
+
+	fmt.Fprintf(w, `
+	{"msg": "success", 
+	"code": 0}`)
 }
