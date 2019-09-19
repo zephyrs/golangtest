@@ -7,11 +7,13 @@ import (
 	"os"
 )
 
+// IO
 const (
 	IOInput = iota
 	IOFile
 )
 
+// NewLine ...
 var NewLine = flag.Bool("n", false, "print newline") // echo -n flag, of type *bool
 
 func runTestIOs() {
@@ -20,7 +22,7 @@ func runTestIOs() {
 	flag.PrintDefaults()
 	flag.Parse() // Scans the arg list and sets up flags
 
-	var s string = ""
+	var s string
 	for i := 0; i < flag.NArg(); i++ {
 		if i > 0 {
 			s += " "

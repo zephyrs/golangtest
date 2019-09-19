@@ -1,7 +1,9 @@
 package main
 
-import "fmt"
-import "helper"
+import (
+	"fmt"
+	"helper"
+)
 
 //list test items
 const (
@@ -21,7 +23,7 @@ var un = helper.Un
 var where = helper.Where
 
 func main() {
-	item := ItemWeb
+	item := ItemBasics
 	fmt.Printf("current test item: %v\n", item)
 
 	switch item {

@@ -4,12 +4,15 @@ import (
 	"fmt"
 )
 
+// Car ...
 type Car struct {
 	Model        string
 	Manufacturer string
 	BuildYear    int
 	// ...
 }
+
+// Cars ...
 type Cars []*Car
 
 func runTestMaps() {
@@ -74,7 +77,7 @@ func (cs Cars) Process(f func(car *Car)) {
 	}
 }
 
-// Find all cars matching a given criteria.
+// FindAll : Find all cars matching a given criteria.
 func (cs Cars) FindAll(f func(car *Car) bool) Cars {
 	cars := make([]*Car, 0)
 
@@ -86,7 +89,7 @@ func (cs Cars) FindAll(f func(car *Car) bool) Cars {
 	return cars
 }
 
-// Process cars and create new data.
+// Map : Process cars and create new data.
 func (cs Cars) Map(f func(car *Car) Any) []Any {
 	result := make([]Any, len(cs))
 	ix := 0
@@ -97,6 +100,7 @@ func (cs Cars) Map(f func(car *Car) Any) []Any {
 	return result
 }
 
+// MakeSortedAppender : Prepare maps of sorted cars.
 func MakeSortedAppender(manufacturers []string) (func(car *Car), map[string]Cars) {
 	// Prepare maps of sorted cars.
 	sortedCars := make(map[string]Cars)
